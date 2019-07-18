@@ -45,7 +45,7 @@ def crearAutor(request):
         if autor_form.is_valid():   # cuando uso el is_valid django guarda la info # -*- coding: utf-8 -*-
             # cleaned_data, la recupero , nom=autor_form.cleaned_data('nombre', etc) y print(nom)#
             autor_form.save()
-            return redirect('index')
+            return redirect('libro:listar_autor')
     # ---------------------------------------------------
     #--------- formato comun html----------------------------
         #nom= request.POST.get('nombre')

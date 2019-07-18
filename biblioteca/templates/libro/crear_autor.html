@@ -1,36 +1,44 @@
-{% extends 'libro/index.html' %}
-{% block title %}Creacion de Autor{% endblock title %}
-{% load staticfiles %}
+{% extends 'index.html' %}
+{% block titulo %}
+  Biblioteca.dev | Registro de Autores
+{% endblock titulo %}
 
-  {% block body %}
-    <form method="POST">
-      {% csrf_token %}
+{% block body %}
+<form method="POST">
+  {% csrf_token %}
+  {% if error %}
+    <h2>{{ error }}</h2>
+  {% else %}
+      <div class="card">
+          <div class="card-header">
+              <strong>Formulario de Registro</strong>
+          </div>
+          <div class="card-body card-block">
+              <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                  <div class="row form-group">
+                      <div class="col col-md-3">{{ autor_form.nombre.label }}</div>
+                      <div class="col-12 col-md-9">{{ autor_form.nombre }}</div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col col-md-3">{{ autor_form.apellidos.label }}</div>
+                      <div class="col-12 col-md-9">{{ autor_form.apellidos }}</div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col col-md-3">{{ autor_form.nacionalidad.label }}</div>
+                      <div class="col-12 col-md-9">{{ autor_form.nacionalidad }}</div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col col-md-3">{{ autor_form.descripcion.label }}</div>
+                      <div class="col-12 col-md-9">{{ autor_form.descripcion }}</div>
+                  </div>
+                  <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Registrar</button>
+                      <button type="reset" class="btn btn-danger">Cancelar</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  {% endif %}
+</form>
 
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
-      <h2>Ingresa ó modifica autor</h2>
-        <div class="col-md-8 col-md-offset-2">
-			     <div class="form-group">
-             <label>nombres</label>
-             <input type="text" name="nombre">
-             <br/>
-             <label>apellidos</label>
-             <input type="text" name="apellidos">
-             <br/>
-             <label>nacionalidad</label>
-             <input type="text" name="nacionalidad" >
-             <br/>
-             <label>descripcion</label>
-             <input type="text" name="descripcion" size="35" >
-           </div>
- 		      </div>
-        <div class="col-md-8 col-md-offset-2">
-			       <div class="form-group">
-				           <button class="btn btn-primary" type="submit">Guardar</button>
-			        </div>
-        </div>
-      {% endif %}
-    </form>
-  {% endblock body %}
-</html>
+{% endblock body %}
