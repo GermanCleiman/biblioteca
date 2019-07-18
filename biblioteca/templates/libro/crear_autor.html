@@ -1,0 +1,36 @@
+{% extends 'libro/index.html' %}
+{% block title %}Creacion de Autor{% endblock title %}
+{% load staticfiles %}
+
+  {% block body %}
+    <form method="POST">
+      {% csrf_token %}
+
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+      <h2>Ingresa ó modifica autor</h2>
+        <div class="col-md-8 col-md-offset-2">
+			     <div class="form-group">
+             <label>nombres</label>
+             <input type="text" name="nombre">
+             <br/>
+             <label>apellidos</label>
+             <input type="text" name="apellidos">
+             <br/>
+             <label>nacionalidad</label>
+             <input type="text" name="nacionalidad" >
+             <br/>
+             <label>descripcion</label>
+             <input type="text" name="descripcion" size="35" >
+           </div>
+ 		      </div>
+        <div class="col-md-8 col-md-offset-2">
+			       <div class="form-group">
+				           <button class="btn btn-primary" type="submit">Guardar</button>
+			        </div>
+        </div>
+      {% endif %}
+    </form>
+  {% endblock body %}
+</html>
