@@ -1,16 +1,15 @@
 from django.shortcuts import render, redirect
 from .forms import AutorForm
 from .models import Autor
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DeleteView
+from django.urls import reverse_lazy
 
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 # cuando ingrese una url (request'pedido desde el navegador) hace...
 # render , pintar en..parametros(request, template a pintar)
-# -------------paso de funciones a clases--------------------
-#def home(request):
-#    return render(request, 'index.html')
+# ------------- clases--------------------
 
 class Inicio(TemplateView):
     template_name = 'index.html'
@@ -37,7 +36,7 @@ class TemplateView(view):
         return render(request, template_name)
 
 '''
-
+'''
 def crearAutor(request):
     if request.method == 'POST':
     #----------- formato django automatico-----------------
@@ -58,7 +57,19 @@ def crearAutor(request):
     else:
         autor_form = AutorForm()
         return render(request,'libro/crear_autor.html', {'autor_form':autor_form})
+'''
 
+class CrearAutor(CreateView):
+    model = Autor
+    form_class = AutorForm
+    template_name = 'libro/crear_autor.html'
+    success_url = reverse_lazy('libro:listar_autor')
+
+class ActualizarAutor(UpdateView):
+    model = Autor
+    template_name = 'libro/crear_autor.html'
+    form_class = AutorForm
+    success_url = reverse_lazy('libro:listar_autor')
 
 class ListadoAutor(ListView):
     model = Autor
@@ -66,23 +77,17 @@ class ListadoAutor(ListView):
     context_object_name = 'autores'
     queryset = Autor.objects.filter(estado = True)
 
+class EliminarAutor(DeleteView):
+    model = Autor
+    # redefino el post de DeleteView para que no use el que viene por defecto
+    def post(self, request, pk,*args, **kwargs):
+        object = Autor.objects.get(id = pk)
+        object.estado = False
+        object.save()
+        return redirect('libro:listar_autor')
 
-def editarAutor(request,id):
-    autor_form = None
-    try:
-        autor = Autor.objects.get(id = id)
-        if request.method == 'GET':
-            autor_form = AutorForm(instance = autor)
-        else:
-            autor_form = AutorForm(request.POST, instance = autor)
-            if autor_form.is_valid():
-                autor_form.save()
-            return redirect('libro:listar_autor')
-    except ObjectDoesNotExist as e:
-        error = e
-    error = None
-    return render(request, 'libro/crear_autor.html', {'autor_form': autor_form, 'error':error})
 
+'''
 def eliminarAutor (request,id):
     autor = Autor.objects.get(id = id)
     if request.method == 'POST':
@@ -93,3 +98,4 @@ def eliminarAutor (request,id):
         # ---------------------------------
         return redirect('libro:listar_autor')
     return render(request, 'libro/eliminar_autor.html', {'autor': autor})
+'''
