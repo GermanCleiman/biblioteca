@@ -79,7 +79,6 @@ class ListadoAutor(ListView):
 
 class EliminarAutor(DeleteView):
     model = Autor
-    # redefino el post de DeleteView para que no use el que viene por defecto
     def post(self, request, pk,*args, **kwargs):
         object = Autor.objects.get(id = pk)
         object.estado = False
